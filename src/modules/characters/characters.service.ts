@@ -23,7 +23,7 @@ export class CharactersService {
     private readonly httpService: HttpService,
     @Inject(TOKENSORM.CHARACTER_REPOSITORY)
     private readonly characterRepo: CharactersInterface,
-  ) {}
+  ) { }
   async sync(): Promise<ResponseCharactersDto[]> {
     try {
       const { data } = await firstValueFrom(
@@ -32,7 +32,6 @@ export class CharactersService {
       const characters = await this.characterRepo.createManyCharacters(data.results);
       return characters;
     } catch (error) {
-      console.log(error);
       if (error instanceof HttpException) {
         throw error;
       }
@@ -94,13 +93,11 @@ export class CharactersService {
       const characterById = await this.characterRepo.findByIdCharacter(id);
       if (!characterById) throw new NotFoundException('Personaje no encontrado');
       const characterName = await this.characterRepo.findByNameCharacter(character.name);
-      console.log(characterName);
       if (characterName == null || characterName.id === id) {
         return await this.characterRepo.updateCharacter(id, character);
       }
       throw new BadRequestException('Personaje con el mismo nombre ya existe');
     } catch (error) {
-      console.log(error);
       if (error instanceof HttpException) {
         throw error;
       }

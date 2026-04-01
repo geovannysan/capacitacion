@@ -21,10 +21,19 @@ async function bootstrap() {
       transform: true,
     }),
   );
-  
+
   app.enableCors(corsOptions({ app }));
   app.useGlobalFilters(new HttpExceptionFilter());
   app.enableVersioning({ type: VersioningType.URI });
+  app.use(
+    ['/docs'],
+    basicAuth({
+      challenge: true,
+      users: {
+        [config.get<string>(ENV.ADMIN)]: config.get<string>(ENV.PASSWORD_ADMIN),
+      },
+    })
+  )
   swaggerConsfig({
     title: 'Documento practico Usuarios',
     description: 'API practica de Usuarios',

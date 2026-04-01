@@ -13,7 +13,7 @@ export class UserRepository implements Userrepository {
     private readonly userRepository: Repository<User>,
     private readonly orderRepository: Repository<Order>,
     private readonly dataSource: DataSource,
-  ) {}
+  ) { }
   async execute<T>(work: () => Promise<T>): Promise<T> {
     return this.dataSource.transaction(async () => {
       return await work();
@@ -43,8 +43,8 @@ export class UserRepository implements Userrepository {
   async findUserByEmailAndName({ name, email }: { name: string; email: string }): Promise<User[]> {
     return await this.userRepository
       .createQueryBuilder('User')
-      .where('User.name like :name', { name: `%${name}%` })
-      .orWhere('User.email like :email', { email: `%${email}%` })
+      .where('User.name = :name', { name })
+      .orWhere('User.email = :email', { email })
       .getMany();
   }
 }

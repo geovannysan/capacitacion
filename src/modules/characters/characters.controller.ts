@@ -1,16 +1,16 @@
 import { Body, Controller, Delete, Get, Param, Post, Put, UseGuards } from '@nestjs/common';
 import { CharactersService } from './characters.service';
 import { ApiBearerAuth, ApiOkResponse, ApiResponse, getSchemaPath } from '@nestjs/swagger';
-import { GuardGuardJWT } from '../auth/guard/guard.guard';
 import { CreateCharactersDto, ResponseCharactersDto, UpdatCharactersDto } from './dtos';
 import { getCharacterDecorator, postCharcterDecorator, putCharacterDecorator } from './decorator';
 import { exceptionSwaggerDecorator } from 'src/common/decorators/exception-swagger.decorator';
+import { GuardGuardJWT } from '../auth/guard';
 
 @Controller('characters')
 @UseGuards(GuardGuardJWT)
 @exceptionSwaggerDecorator()
 export class CharactersController {
-  constructor(private readonly charactersService: CharactersService) {}
+  constructor(private readonly charactersService: CharactersService) { }
 
   @ApiBearerAuth()
   @ApiResponse({ status: 200, description: 'Return all characters' })

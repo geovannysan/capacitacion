@@ -4,7 +4,7 @@ import { ResponseAuthDto } from './dtos/response-auth.dto';
 import { ApiTags } from '@nestjs/swagger';
 import { RequestWithUser } from './interfaces/cookies-request.interface';
 import { loginTokenDecorator, refresTokenDecorator } from './decorators';
-import { AuthGuard } from '@nestjs/passport';
+import { LocalAuthGuard } from './guard';
 
 @ApiTags('auth')
 @Controller({
@@ -13,12 +13,12 @@ import { AuthGuard } from '@nestjs/passport';
 export class AuthController {
   constructor(
     private readonly authService: AuthService,
-  ) {}
+  ) { }
 
 
-  @UseGuards(AuthGuard('local'))
+  @UseGuards(LocalAuthGuard)
   @loginTokenDecorator()
-  @Post('login')  
+  @Post('login')
   async login(@Request() req: RequestWithUser) {
     return this.authService.login(req.user);
   }
